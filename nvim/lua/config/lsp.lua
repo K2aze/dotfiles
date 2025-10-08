@@ -1,56 +1,76 @@
+-- Mason UI
 require("mason").setup({
-    ui = {
-        icons = {
-            package_installed = "✓",
-            package_pending = "➜",
-            package_uninstalled = "✗"
-        }
+  ui = {
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗"
     }
+  }
 })
 
+-- Mason-LSPConfig: auto setup LSP servers
 require("mason-lspconfig").setup({
   ensure_installed = {
-    "lua_ls",      -- LSP cho Lua (Neovim config)
-    -- Thêm các LSP khác tùy ngôn ngữ bạn dùng, ví dụ: "clangd" cho C++
+    "lua_ls",  -- LSP cho Lua
   },
   handlers = {
-    -- Mặc định cho tất cả servers
     function(server_name)
-      require("lspconfig")[server_name].setup {}
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+      require("lspconfig")[server_name].setup({
+        capabilities = capabilities,
+      })
     end,
-    -- Tùy chỉnh cho lua_ls (cho phép dùng 'vim' như global)
-    ['lua_ls'] = function()
-      local lspconfig = require('lspconfig')
-      lspconfig.lua_ls.setup {
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { 'vim' },
-            },
-          },
+
+    -- Cấu hình riêng cho Lua
+  ["lua_ls"] = function()
+  local lspconfig = require("lspconfig")
+  local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+  lspconfig.lua_ls.setup({
+    capabilities = capabilities,
+    settings = {
+      Lua = {
+        runtime = {
+          version = "LuaJIT", -- Neovim dùng LuaJIT
         },
-      }
-    end,
+        diagnostics = {
+          globals = { "vim" }, -- tránh báo lỗi 'undefined global vim'
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file("", true), -- load thư viện runtime của Neovim
+          checkThirdParty = false, -- tắt cảnh báo third-party
+        },
+        telemetry = { enable = false }, -- tắt gửi dữ liệu
+      },
+    },
+  })
+end,
+
   },
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- Hiển thị diagnostics (hint, warn, error, info)
+vim.diagnostic.config({
+  -- ✨ Biểu tượng hiển thị bên cột trái
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN]  = " ",
+      [vim.diagnostic.severity.HINT]  = " ",
+      [vim.diagnostic.severity.INFO]  = " ",
+    },
+  },
 
+  -- ✨ Hiển thị lỗi, cảnh báo, hint trong code
+  virtual_text = {
+    prefix = "●",   -- Ký hiệu trước lỗi/hint
+    spacing = 4,    -- Khoảng cách giữa text và code
+  },
 
-local on_attach = function(client, bufnr)
-  local bufopts = { noremap = true, silent = true, buffer = bufnr }
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', 'gl', vim.diagnostic.open_float, bufopts)
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
-end
+  underline = true,        -- Gạch chân dòng có lỗi
+  update_in_insert = false,-- Không update khi đang gõ
+  severity_sort = true,    -- Sắp xếp theo độ nghiêm trọng
+})
 
--- Áp dụng on_attach cho tất cả LSP (thêm vào handler nếu cần)
--- Ví dụ trong mason-lspconfig handlers:
--- require("lspconfig")[server_name].setup { on_attach = on_attach, capabilities = capabilities }
