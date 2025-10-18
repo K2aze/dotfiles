@@ -15,10 +15,7 @@ vim.keymap.set('n', '<leader>b', '<cmd>Bufferin<CR>')
 require('bufferline').setup({
   options = {
     mode = "buffers",
-    indicator = {
-      icon="",
-      style = "icon",
-    }
+    icon = "󰞇",
   }
 })
 
