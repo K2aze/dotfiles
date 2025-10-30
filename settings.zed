@@ -85,7 +85,20 @@
       "terminal.background": "#5901612e",
       "terminal.foreground": "#8349BA",
       "border": "#FA01F250",
-      "editor.gutter.background": "#000000aa"
+      "editor.gutter.background": "#000000aa",
+      "editor.highlighted_line.background": "#fff",
+      "ghost_element.selected": "#862E8A",
+      "ghost_element.hover": "#C9A8F935",
+      "editor.document_highlight.bracket_background": "#05FAB98e",
+      "search.match_background": "#03A1C88e",
+      "tab.active_background": "#C919FE25",
+      "tab.inactive_background": "#C919FE00",
+      "ghost_element.background": "#FF32EA21",
+      "players": [
+        {
+          "selection": "#19FEBD55"
+        }
+      ]
     }
   }
 }
