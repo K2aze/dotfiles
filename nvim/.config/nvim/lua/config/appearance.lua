@@ -1,7 +1,14 @@
 --`Lua.diagnostics.globals`: add element `"vim"`
 --set colorscheme
-vim.cmd.colorscheme "catppuccin-mocha"
-require("catppuccin").setup {}
+require("catppuccin").setup({
+  flavour = "mocha",
+  transparent_background = true,
+  float = {
+    transparent = true,
+  }
+})
+vim.cmd.colorscheme "catppuccin-nvim"
+
 vim.api.nvim_set_hl(0, "Todo", {
   fg = "#a6e3a1", -- green of Catppuccin mocha
   bg = "NONE",

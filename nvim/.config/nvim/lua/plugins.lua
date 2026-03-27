@@ -44,8 +44,6 @@ require('pckr').add {
     },
   },
 
-
-
   --lsp
   { 'L3MON4D3/LuaSnip',                 tag = "v2.*" },
   { 'mason-org/mason.nvim' },
@@ -63,9 +61,12 @@ require('pckr').add {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-  }
+  },
+  -- terminal
+  { "akinsho/toggleterm.nvim", tag = '*' },
 }
 
 require("config.appearance")
 require("config.explorer")
 require("config.lsp")
+require("config.terminal")

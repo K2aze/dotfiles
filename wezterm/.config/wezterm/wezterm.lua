@@ -3,11 +3,13 @@ local wezterm = require("wezterm")
 local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
 
 local config = {
-  default_cwd = "D:\\",
   color_scheme = "Catppuccin Mocha",
   font = wezterm.font("FiraCode Nerd Font"),
   font_size = 14,
-  use_fancy_tab_bar = true,
+  window_background_opacity = 0.9,
+  text_background_opacity = 1.0,
+  initial_cols = 140,
+  initial_rows = 38,
   keys = {
     {
       key = "v",
@@ -44,34 +46,38 @@ local config = {
       mods = "CTRL|SHIFT",
       action = wezterm.action.CloseCurrentPane { confirm = true },
     },
+    {
+      key = "Delete",
+      mods = "NONE",
+      action = wezterm.action.SendString("\x1b[3~"),
+    },
+    {
+      key = "c",
+      mods = "CTRL",
+      action = wezterm.action.CopyTo("ClipboardAndPrimarySelection"),
+    },
+    {
+      key = "v",
+      mods = "CTRL",
+      action = wezterm.action.PasteFrom("Clipboard"),
+    },
+  },
+  colors = {
+    tab_bar = {
+      background = "#fff"
+    }
   }
 }
 
 
-config.default_prog = {
-  -- for PowerShell 7 preview
-  [[C:\Program Files\PowerShell\7-preview\pwsh.exe]],
-  '-NoExit',
-  '-NoLogo',
-  '-Command',
-  [[& {
-        Import-Module "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Microsoft.VisualStudio.DevShell.dll";
-        Enter-VsDevShell c615014b -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"
-    }]]
-}
-
 config.allow_win32_input_mode = false
 config.enable_kitty_keyboard = true
 
-config.window_decorations = "RESIZE"
+-- config.window_decorations = "RESIZE"
 -- config.hide_tab_bar_if_only_one_tab = true
 
--- example enable spotify module
-
--- example enable spotify module
 bar.apply_to_config(
-  config,
-  {
+  config, {
     position = "top",
     padding = {
       left = 2,
@@ -80,7 +86,7 @@ bar.apply_to_config(
         left = 8,
         right = 8,
       }
-    }
+    },
   }
 )
 
