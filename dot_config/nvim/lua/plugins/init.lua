@@ -1,0 +1,8 @@
+require("plugins.dependencies")
+require("plugins.nvim-tree")
+require("plugins.telescope")
+require("plugins.blink")
+require("plugins.lsp-saga")
+require("plugins.tree-sitter")
+require("plugins.indent")
+require("plugins.align")
