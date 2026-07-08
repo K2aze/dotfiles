@@ -6,5 +6,7 @@ vim.lsp.enable(
   {
     "lua_ls",
     "pyright",
+    "intelephense",
+    "laravel_ls"
   }
 )
