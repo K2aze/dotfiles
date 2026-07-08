@@ -5,3 +5,10 @@ require("nvim-treesitter").setup{
 }
 
 require("nvim-treesitter").install{"lua", "python"}
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'blade' },
+  callback = function()
+    vim.treesitter.start()
+  end,
+})

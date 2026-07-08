@@ -1,4 +1,9 @@
-vim.pack.add({ 'https://github.com/saghen/blink.lib', 'https://github.com/saghen/blink.cmp' })
+vim.pack.add({
+  {
+    src = "https://github.com/saghen/blink.cmp",
+    version = vim.version.range("^1"),
+  },
+})
 
 -- Lazy load on first insert mode entry
 local group = vim.api.nvim_create_augroup("BlinkCmpLazyLoad", { clear = true })
